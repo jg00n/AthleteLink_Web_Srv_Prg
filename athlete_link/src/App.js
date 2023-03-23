@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import logo from './images/AthletelinkCircle.png';
 import './App.css';
+import AthleteHome from './components/AthleteHome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 import {faLock} from '@fortawesome/free-solid-svg-icons';
@@ -9,135 +10,84 @@ function App() {
   const [hide, setHide] = useState(true);
   const [show, setShow] = useState(true);
 
+  
   const validateForm = (event) => {
     event.preventDefault();
-    const input1 = document.getElementById("#input1");
-    const input2 = document.getElementById("#input2");
+    const input1 = document.querySelector("#input1");
+    const input2 = document.querySelector("#input2");
     const status = document.querySelector(".status");
-
-    let invalid = "Please fill-in all fields.";
-    let invalidEmail = "The email you entered is invalid.";
-    let invalidPassw = "Password must be between 8-16 characters, have at least 1 number, and 1 special character."
-
-    if(!input1.value){
+  
+    let validation = "Please fill-in the fields below.";
+    if(!input1.value && !input2.value) {
       console.warn("validation error");
       status.classList.add("active");
-      status.innerHTML = `${invalid}`;
+      status.innerHTML = `${validation}`;
     }else{
-      validateEmail();
+      if(validateEmail())
+        validatePassw();
     }
-    function validateEmail(){       //Function used to validate emails.
+   
+     if(input1.classList.contains("valid") && input2.classList.contains("valid")){
+       console.log('submitted');
+       setTimeout(() => {
+        //  window.location.href = 'AthleteLinkHome';
+        let container = document.querySelector(".container");
+        let wrapper = document.querySelector(".wrapper");
+        setHide(!hide + wrapper.classList.add("hide"));
+        setShow(!show + container.classList.add("show"));
+  
+         
+       }, 1000);
+     }
+    }
+
+    const validateEmail =() =>{    //Function used to validate emails.
+      const input1 = document.querySelector("#input1");
+      const status = document.querySelector(".status");
+      let invalidEmail = "The email you entered is invalid.";
       let pattern =  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
       if(!input1.value.match(pattern)){
         console.warn("pattern failed");
         status.classList.add("active");
         status.innerHTML = `${invalidEmail}`;
+        return false;
       }else{
         console.log("input1 validated");
         status.classList.remove("active");
         input1.classList.add("valid");
+        return true;
       }
-
-    }
-
-    if(!input2.value){
-      console.warn("validation error");
-      status.classList.add("active");
-      status.innerHTML = `${invalid}`;
-    }else{
-      validatePassw();
-    }
-    function validatePassw(){
-      let pattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
-      if(!input2.value.match(pattern)){
-        console.warn("pattern failed");
-        status.classList.add("active");
-        status.innerHTML = `${invalidPassw}`;
-
-      }else{
-        console.log("input2 validated");
-        status.classList.remove("active");
-        input2.classList.add("valid");
-      }
-    }
-
-    if(input1.classList.contains('valid') && input2.classList.contains('valid')){
-      console.log('submitted');
-
-      setTimeout(()=> {
-        let container = document.querySelector('.container');
-        let wrapper = document.querySelector('.wrapper');
-        setHide(!hide + wrapper.classList.add("hide"));
-        setShow(!show + container.classList.add("show"));
-      }, 1000);
-
-    }
-  }
-
-  const handleMail = () => {
-    const input1 = document.querySelector("#input1");
-    const status = document.querySelector(".status");
-
-    let invalid = "Please fill-in all fields.";
-    let invalidEmail = "The email you entered is invalid.";
-  if(!input1.value) {
-    console.warn("validation error");
-    status.classList.add("active");
-    status.innerHTML = `${invalid}`;
-  }else{
-    validateEmail();
-  }
-  function validateEmail() { 
-    let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-    if(!input1.value.match(pattern)){
-      console.warn("pattern failed")
-      status.classList.add("active");
-      status.innerHTML = `${invalidEmail}`;
-    }else{
-      console.log("input1 validated");
-      status.classList.remove("active");
-    }
-   }
-  }
-  const handlePassword  = () => {
-    const input2 = document.querySelector("#input2");
-    const status = document.querySelector(".status");
   
-    let invalid = "Please fill-in all fields.";
-    let invalidPassw = "Password must be between 8-16 characters, have at least 1 number, and 1 special character."
-     if(!input2.value){
-        console.warn("validation error");
-        status.classList.add("active");
-        status.innerHTML = `${invalid}`;
-     }else{
-       validatePassw();
-     }
-     function validatePassw(){
+    }
+  
+    const validatePassw =() =>{    //Function used to validate passwords.
+      const input2 = document.querySelector("#input2");
+      const status = document.querySelector(".status");
+      let invalidPassw = "Password must be between 8-16 characters, have at least 1 number, and 1 special character."
       let pattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
       if(!input2.value.match(pattern)){
         console.warn("pattern failed");
         status.classList.add("active");
         status.innerHTML = `${invalidPassw}`;
-
+        return false;
       }else{
         console.log("input2 validated");
         status.classList.remove("active");
         input2.classList.add("valid");
+        return true;
       }
+  
     }
-  }
-     
-
   return (
     <div className="App">
-
+      <AthleteHome/>
       <div className="wrapper">
         <div className ="content">
           <div className="logo">
             <img src = {logo} alt ="" />
           </div>
           <div className="c1">
-            <span>Become a member of Athlete Link today!</span>
+            <span>Welcome back to Athlete Link!</span>
           </div>
 
           <div className = "form">
@@ -145,26 +95,23 @@ function App() {
             <form action="#" onSubmit={validateForm}>
               <div className = "eInput">
                 <FontAwesomeIcon className='icon' icon = {faUser}/>
-                <input type = "text" id="input1" placeholder='Enter Email Address' onKeyUp={handleMail}/>
+                  {/*onKeyUp = {function}*/}
+                <input id='input1' type = "text" placeholder='Enter Email Address'/>
               </div>
               <div className = "eInput">
                 <FontAwesomeIcon className='icon' icon = {faLock}/>
-                <input type = "password" id="input2" placeholder='Enter Password' onKeyUp={handlePassword}/>
+                <input id='input2' type = "password" placeholder='Enter Password'/>
               </div>
               <div className="login">
-                <button type="login">Login</button>
+                <button type="submit" onClick={validateForm}>Login</button>
               </div>
               <div className="submit">
-                <button type="submit">Sign Up</button>
+                <button type="button">Sign Up</button>
               </div>
             </form>
           </div>
         </div>
-
-
-
       </div>
-
     </div>
   );
 }
