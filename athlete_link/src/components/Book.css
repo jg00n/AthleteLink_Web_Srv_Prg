@@ -1,0 +1,46 @@
+:root{
+    --white: #FFF;
+    --bg: #797b8a;
+    --bgdark: #4f5058;
+    --grey: #CCC;
+    --success-bg: #6BCB77;
+  }
+
+.box{
+    width: 100%;
+    max-width: 500px;
+    padding: 30px 30px;
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 32px 32px rgba(0,0,0,0.4);
+}
+
+.box .content .text{
+    font-weight: 500;
+    font-size: 1.4em;
+
+}
+
+.box .content .cards .card_box .card img{
+    width: 100%;
+    height: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+    max-width: 500px;
+    object-fit: cover;
+    margin: 0 auto;
+}
+.box .content .cards .card_box .card{
+    margin: 0 0 20px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+.box .content .cards .card_box .card:hover{
+    background-color: var(--bg);
+    color: var(--white);
+}
+.box .content .cards .card_box {
+    height: 100%;
+    max-height: 500px;
+    overflow: auto;
+}

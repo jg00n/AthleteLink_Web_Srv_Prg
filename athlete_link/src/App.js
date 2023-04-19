@@ -9,7 +9,7 @@ import {faLock} from '@fortawesome/free-solid-svg-icons';
 function App() {
   const [hide, setHide] = useState(true);
   const [show, setShow] = useState(true);
-
+  const [email, setEmail] = useState('');
   
   const validateForm = (event) => {
     event.preventDefault();
@@ -23,7 +23,8 @@ function App() {
       status.classList.add("active");
       status.innerHTML = `${validation}`;
     }else{
-      if(validateEmail())
+      if(validateEmail() !== null)
+        setEmail(input1.value); //Set email value in state
         validatePassw();
     }
    
@@ -50,12 +51,12 @@ function App() {
         console.warn("pattern failed");
         status.classList.add("active");
         status.innerHTML = `${invalidEmail}`;
-        return false;
+        return null;
       }else{
         console.log("input1 validated");
         status.classList.remove("active");
         input1.classList.add("valid");
-        return true;
+        return input1.value;
       }
   
     }
@@ -80,7 +81,7 @@ function App() {
     }
   return (
     <div className="App">
-      <AthleteHome/>
+      <AthleteHome email={email}/>
       <div className="wrapper">
         <div className ="content">
           <div className="logo">
