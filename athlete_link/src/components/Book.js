@@ -62,9 +62,80 @@ let Events = [
     },
 ]
 
+    const updateTarget = (index) => {
+        //Refactored for usage between event and request hooks.
+        console.log("updating target");
+        const target_imag = document.querySelector("#targetImage");
+        const target_name = document.querySelector("#targetName");
+        const target_type = document.querySelector("#targetType");
+        const target_min = document.querySelector("#targetMin");
+        const target_max = document.querySelector("#targetMax");        
 
+        console.log("target: ", target_name ,", index: ", index);
+        console.log(Events[index].name);
+        console.log(Events[index].min);
+        console.log(Events[index].max);
+        target_imag.src = Events[index].image;
+        target_name.innerHTML = Events[index].name;
+        target_type.innerHTML = Events[index].type;
+        target_min.innerHTML = Events[index].min;
+        target_max.innerHTML = Events[index].max;
+    }
 
+    const bookEvent = (index, event) => {
+        console.log("bookEvent: index =", index);
+        const cards = document.querySelector(".cards_box");
+        const request = document.querySelector(".request");
+        const cancel = document.querySelector(".cancel");
+        if (index === undefined){
+            console.log("bookEvent: index is undefined.")
+            return;
+        }
+        updateTarget(index);
 
+        cards.style.display = "none";
+        request.style.display = "block";
+        cancel.style.display = "block";
+
+        writeUserData();
+        function writeUserData(){
+            const db= getDatabase();
+
+            set(ref(db, `booking/`),{
+                eventImage: Events[index].image,
+                eventName: Events[index].name,
+                eventType: Events[index].type,
+                eventMin: Events[index].min,
+                eventMax: Events[index].max,
+            });
+
+        }
+    }
+
+    const request = (index) => {
+        console.log(index);
+        const cards = document.querySelector(".cards_box");
+        const request = document.querySelector(".request");
+        const cancel = document.querySelector(".cancel")
+
+        cards.style.display = "block";
+        request.style.display = "none";
+        cancel.style.display = "none";
+
+        alert("Your request has been submitted.");
+
+        updateTarget(-1);
+    }
+
+    const cancel =() =>{
+        const cards = document.querySelector(".cards_box");
+        const request = document.querySelector(".request");
+        const cancel = document.querySelector(".cancel");
+
+        cards.style.display = "block";
+        request.style.display = "none";
+        cancel.style.display = "none";
+    }
 const book = () => {
     return (
         <div className='box'>
@@ -74,66 +145,34 @@ const book = () => {
                     <div className='trgt'>
                         <div className='card'>
                             <img src="" id="targetImage" alt=""/>
-                            <div className="event_name" id="targetName"></div>
-                            <div className="price" id="targetPrice"></div>
+                            <div className="name" id="targetName"></div>
+                            <div className="type" id="targetType"></div>
+                            <div className="min" id="targetMin"></div>
+                            <div className="max" id="targetMax"></div>
+
                         </div>
 
                     </div>
                 </div>
 
                 <div className="cards">
-                    <div className='card_box'>
-                        <div className ='card'>
-                            <img src="" alt="event1"/>
-                            <div className="event_name"></div>
-                            <div className="sport_type"></div>
-                            <div className="player_reg"></div>
-                            <div className="player_max"></div>
-                        </div>
-
-                        <div className ='card'>
-                            <img src="" alt="event2"/>
-                            <div className="event_name"></div>
-                            <div className="sport_type"></div>
-                            <div className="player_reg"></div>
-                            <div className="player_max"></div>
-                        </div>
-
-                        <div className ='card'>
-                            <img src="" alt="event3"/>
-                            <div className="event_name"></div>
-                            <div className="sport_type"></div>
-                            <div className="player_reg"></div>
-                            <div className="player_max"></div>
-                        </div>
-
-                        <div className ='card'>
-                            <img src="" alt="event5"/>
-                            <div className="event_name"></div>
-                            <div className="sport_type"></div>
-                            <div className="player_reg"></div>
-                            <div className="player_max"></div>
-                        </div>
-
-                        <div className ='card'>
-                            <img src="" alt="event6"/>
-                            <div className="event_name"></div>
-                            <div className="sport_type"></div>
-                            <div className="player_reg"></div>
-                            <div className="player_max"></div>
-                        </div>
-
-                        <div className ='card'>
-                            <img src="" alt="event7"/>
-                            <div className="event_name"></div>
-                            <div className="sport_type"></div>
-                            <div className="player_reg"></div>
-                            <div className="player_max"></div>
-                        </div>
+                    <div className='cards_box'>
+                        {Events.map((eventName, index)=>(
+                            <div className ="card" key={index} onClick={() => bookEvent(index)}>
+                                <img src={eventName.image} alt={eventName.name}/>
+                                <div className="event_name">{eventName.name}</div>
+                                <div className="sport_type"> {eventName.type}</div>
+                                <div className="player_reg">Minimum: {eventName.min} players</div>
+                                <div className="player_max">Maximum: {eventName.max} players</div>
+                            </div>
+                        ))}
                     </div>
 
                     <div className = "request">
-                        <button className = "btn">Register</button>
+                        <button className = "btn" onClick={request}>Register</button>
+                    </div>
+                    <div className = "cancel">
+                        <button className = "btn" onClick={cancel}>Cancel</button>
                     </div>
                 </div>
             </div>

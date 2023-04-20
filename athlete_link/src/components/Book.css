@@ -13,6 +13,7 @@
     background: var(--white);
     border-radius: 20px;
     box-shadow: 0 32px 32px rgba(0,0,0,0.4);
+    position: absolute;
 }
 
 .box .content .text{
@@ -21,7 +22,7 @@
 
 }
 
-.box .content .cards .card_box .card img{
+.box .content .cards .cards_box .card img{
     width: 100%;
     height: 100%;
     max-height: 200px;
@@ -30,17 +31,93 @@
     object-fit: cover;
     margin: 0 auto;
 }
-.box .content .cards .card_box .card{
+.box .content .cards .cards_box .card{
     margin: 0 0 20px;
     cursor: pointer;
     transition: all 0.5s ease;
 }
-.box .content .cards .card_box .card:hover{
-    background-color: var(--bg);
-    color: var(--white);
+.box .content .cards .cards_box .card:hover{
+    box-shadow: 0 4px 4px rgba(0,0,0,0.2);
+    padding: 10px;
 }
-.box .content .cards .card_box {
+.box .content .cards .cards_box {
     height: 100%;
     max-height: 500px;
     overflow: auto;
+}
+
+.request{
+    margin-top: 30px;
+    display: inline-block;
+    margin-left: 5px;
+}
+.request button{
+    padding: 15px;
+    width: 100%;
+    max-width: 100px;
+    outline: none;
+    border: none;
+    background: var(--bg);
+    border-radius: 3px;
+    color: var(--white);
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.2);
+    font-size: 16px;
+    transition: all 0.5s ease;
+}
+.request button:hover{
+    background: var(--success-bg);
+}
+
+.cancel{
+    margin-top: 30px;
+    display:inline-block;
+    margin-right: 5px;
+}
+.cancel button{
+    padding: 15px;
+    width: 100%;
+    max-width: 100px;
+    outline: none;
+    border: none;
+    background: var(--bg);
+    border-radius: 3px;
+    color: var(--white);
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.2);
+    font-size: 16px;
+    transition: all 0.5s ease;
+}
+
+.request button:hover{
+    background: var(--bgdark);
+}
+
+.target .card{
+    margin: 20px 0;
+}
+
+.target .card img{
+    width: 100%;
+    height: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+    max-width: 500px;
+    object-fit: cover;
+    margin: 0 auto;
+}
+
+.card .event_name{
+    font-weight: 500;
+    font-size: 1.2em;
+}
+
+.box{
+    display: none;
+}
+
+.box.show{
+    display: block;
 }
