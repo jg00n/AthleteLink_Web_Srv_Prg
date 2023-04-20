@@ -62,25 +62,51 @@ let Events = [
     },
 ]
 
-    const updateTarget = (index) => {
-        //Refactored for usage between event and request hooks.
-        console.log("updating target");
+
+    const setTarget = () => {
+        console.log("setting target")
         const target_imag = document.querySelector("#targetImage");
         const target_name = document.querySelector("#targetName");
         const target_type = document.querySelector("#targetType");
         const target_min = document.querySelector("#targetMin");
-        const target_max = document.querySelector("#targetMax");        
+        const target_max = document.querySelector("#targetMax"); 
+        
+        const targetElements = {
+            target_imag,
+            target_name,
+            target_type,
+            target_min,
+            target_max
+        };
 
-        console.log("target: ", target_name ,", index: ", index);
-        console.log(Events[index].name);
-        console.log(Events[index].min);
-        console.log(Events[index].max);
-        target_imag.src = Events[index].image;
-        target_name.innerHTML = Events[index].name;
-        target_type.innerHTML = Events[index].type;
-        target_min.innerHTML = Events[index].min;
-        target_max.innerHTML = Events[index].max;
+        return targetElements;
+            
     }
+
+    const updateTarget = (index) => {
+        //Refactored for usage between event and request hooks.
+        const targetElements = setTarget();
+        console.log("updating target");
+
+        console.log("target: ", targetElements.target_name ,", index: ", index);
+
+        targetElements.target_imag.src = Events[index].image;
+        targetElements.target_name.innerHTML = Events[index].name;
+        targetElements.target_type.innerHTML = Events[index].type;
+        targetElements.target_min.innerHTML = Events[index].min;
+        targetElements.target_max.innerHTML = Events[index].max;
+    }
+
+    const resetTarget = () =>{
+        console.log("resetting target");
+        const targetElements = setTarget();
+        targetElements.target_imag.src = "";
+        targetElements.target_name.innerHTML = "";
+        targetElements.target_type.innerHTML = "";
+        targetElements.target_min.innerHTML = "";
+        targetElements.target_max.innerHTML = "";
+    }
+
 
     const bookEvent = (index, event) => {
         console.log("bookEvent: index =", index);
@@ -114,6 +140,7 @@ let Events = [
 
     const request = (index) => {
         console.log(index);
+
         const cards = document.querySelector(".cards_box");
         const request = document.querySelector(".request");
         const cancel = document.querySelector(".cancel")
@@ -123,8 +150,9 @@ let Events = [
         cancel.style.display = "none";
 
         alert("Your request has been submitted.");
+        resetTarget();
 
-        updateTarget(-1);
+
     }
 
     const cancel =() =>{
